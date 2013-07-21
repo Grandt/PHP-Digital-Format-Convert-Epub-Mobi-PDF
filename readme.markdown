@@ -8,10 +8,10 @@ The EPub Controller/Model examples are the most complete in this application, in
 
 The tools are constructed from a range of Open Source elements, including:
 
-* EPub PHP class (http://www.phpclasses.org/package/6115)
-* phpMobi (https://github.com/raiju/phpMobi)
-* mPDF (http://www.mpdf1.com/mpdf/)
-* PHPDOCX (http://www.phpdocx.com/)
+* EPub PHP class (http://www.phpclasses.org/package/6115) (License: LGPL 2.1)
+* phpMobi (https://github.com/raiju/phpMobi) (License: Apache License, Version 2.0)
+* mPDF (http://www.mpdf1.com/mpdf/) (License: GPL (v2?))
+* PHPDOCX (http://www.phpdocx.com/) (Community edition, License: LGPL)
 * Twitter Bootstrap (http://twitter.github.com/bootstrap/)
 * A copy of the source code for these elements are available in /library
 
