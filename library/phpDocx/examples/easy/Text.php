@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Create a DOCX file. Text example
+ * Inserts a simple text in bold Arial font.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.0
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
@@ -26,10 +26,10 @@ $text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
     'officia deserunt mollit anim id est laborum.';
 
 $paramsText = array(
-    'b' => 'single',
+    'b' => 'on',
     'font' => 'Arial'
 );
 
 $docx->addText($text, $paramsText);
 
-$docx->createDocx('example_text');
+$docx->createDocx('../docx/example_text');

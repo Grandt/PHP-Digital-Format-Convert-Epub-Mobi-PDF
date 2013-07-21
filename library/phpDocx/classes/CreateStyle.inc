@@ -6,28 +6,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.1
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create styles
- *
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    2.1
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateStyle extends CreateElement
 {
 
@@ -96,57 +83,64 @@ class CreateStyle extends CreateElement
     public function addStyle()
     {
         $args = func_get_args();
-        if (!empty($args[0][0]['type']) && !empty($args[0][0]['styleId'])) {
+        if (isset($args[0][0]['type']) && isset($args[0][0]['styleId'])) {
+            if (!isset($args[0][0]['default'])) {
+                $args[0][0]['default'] = '';
+            }
+            if (!isset($args[0][0]['customStyle'])) {
+                $args[0][0]['customStyle'] = '';
+            }
+            
             $this->generateSTYLE(
                 $args[0][0]['type'], $args[0][0]['styleId'],
                 $args[0][0]['default'], $args[0][0]['customStyle']
             );
         }
-        if (!empty($args[0][0]['name'])) {
+        if (isset($args[0][0]['name'])) {
             $this->generateNAME($args[0][0]['name']);
         }
-        if (!empty($args[0][0]['basedOn'])) {
+        if (isset($args[0][0]['basedOn'])) {
             $this->generateBASEDON($args[0][0]['basedOn']);
         }
-        if (!empty($args[0][0]['next'])) {
+        if (isset($args[0][0]['next'])) {
             $this->generateNEXT($args[0][0]['next']);
         }
-        if (!empty($args[0][0]['link'])) {
+        if (isset($args[0][0]['link'])) {
             $this->generateLINK($args[0][0]['link']);
         }
-        if ($args[0][0]['autoRedefine'] == 1) {
+        if (isset($args[0][0]['autoRedefine'])) {
             $this->generateAUTOREDEFINE();
         }
-        if (!empty($args[0][0]['uiPriority'])) {
+        if (isset($args[0][0]['uiPriority'])) {
             $this->generateUIPRIORITY($args[0][0]['uiPriority']);
         }
-        if ($args[0][0]['semiHidden'] == 1) {
+        if (isset($args[0][0]['semiHidden'])) {
             $this->generateSEMIHIDDEN();
         }
-        if ($args[0][0]['unhideWhenUsed'] == 1) {
+        if (isset($args[0][0]['unhideWhenUsed'])) {
             $this->generateUNHIDEWHENUSED();
         }
-        if ($args[0][0]['qFormat'] == 1) {
+        if (isset($args[0][0]['qFormat'])) {
             $this->generateQFORMAT();
         }
-        if (!empty($args[0][0]['rsid'])) {
+        if (isset($args[0][0]['rsid'])) {
             $this->generateRSID($args[0][0]['rsid']);
         }
-        if ($args[0][0]['keepNext'] == 1 ||
-            !empty($args[0][0]['keepLines']) ||
-            (isset($args[0][0]['spacing_before']) ||
-            isset($args[0][0]['spacing_after']) ||
-            isset($args[0][0]['spacing_line']) ||
-            isset($args[0][0]['spacing_lineRule'])) ||
-            !empty($args[0][0]['outlineLvl']) ||
-            $args[0][0]['contextualSpacing'] == 1 ||
+        if (isset($args[0][0]['keepNext']) ||
+            isset($args[0][0]['keepLines']) ||
+                (isset($args[0][0]['spacing_before']) ||
+                isset($args[0][0]['spacing_after']) ||
+                isset($args[0][0]['spacing_line']) ||
+                isset($args[0][0]['spacing_lineRule'])) ||
+            isset($args[0][0]['outlineLvl']) ||
+            isset($args[0][0]['contextualSpacing']) ||
             isset($args[0][0]['ilvl']) ||
             isset($args[0][0]['ind_left'])) {
             $this->generatePPR();
-            if ($args[0][0]['keepNext'] == 1)
+            if (isset($args[0][0]['keepNext']))
                 $this->generateKEEPNEXT();
 
-            if (!empty($args[0][0]['keepLines'])) {
+            if (isset($args[0][0]['keepLines'])) {
                 $this->generateKEEPLINES($args[0][0]['keepLines']);
             }
 
@@ -165,12 +159,13 @@ class CreateStyle extends CreateElement
                 );
             }
 
-            if (!empty($args[0][0]['tab_center']) || $args[0][0]['tab_right']) {
+            if (isset($args[0][0]['tab_center']) ||
+                isset($args[0][0]['tab_right'])) {
                 $this->generateTABS();
-                if (!empty($args[0][0]['tab_center'])) {
+                if (isset($args[0][0]['tab_center'])) {
                     $this->generateTABCENTER($args[0][0]['tab_center']);
                 }
-                if (!empty($args[0][0]['tab_right'])) {
+                if (isset($args[0][0]['tab_right'])) {
                     $this->generateTABRIGHT($args[0][0]['tab_right']);
                 }
             }
@@ -178,7 +173,21 @@ class CreateStyle extends CreateElement
             if (isset($args[0][0]['spacing_before']) ||
                 isset($args[0][0]['spacing_after']) ||
                 isset($args[0][0]['spacing_line']) ||
-                isset($args[0][0]['spacing_lineRule'])) {
+                isset($args[0][0]['spacing_lineRule'])
+            ) {
+                if (!isset($args[0][0]['spacing_before'])) {
+                    $args[0][0]['spacing_before'] = '';
+                }
+                if (!isset($args[0][0]['spacing_after'])) {
+                    $args[0][0]['spacing_after'] = '';
+                }
+                if (!isset($args[0][0]['spacing_line'])) {
+                    $args[0][0]['spacing_line'] = '';
+                }
+                if (!isset($args[0][0]['spacing_lineRule'])) {
+                    $args[0][0]['spacing_lineRule'] = '';
+                }
+                
                 $this->generateSPACING(
                     $args[0][0]['spacing_before'],
                     $args[0][0]['spacing_after'],
@@ -189,7 +198,7 @@ class CreateStyle extends CreateElement
             if (isset($args[0][0]['ind_left'])) {
                 $this->generateIND($args[0][0]['ind_left']);
             }
-            if ($args[0][0]['contextualSpacing'] == 1) {
+            if (isset($args[0][0]['contextualSpacing'])) {
                 $this->generateCONTEXTUALSPACING();
             }
             if (isset($args[0][0]['outlineLvl'])) {
@@ -200,27 +209,27 @@ class CreateStyle extends CreateElement
                 $this->generateILVL($args[0][0]['ilvl']);
             }
         }
-        if ((!empty($args[0][0]['rFonts_asciiTheme']) &&
-            !empty($args[0][0]['rFonts_eastAsiaTheme']) &&
-            !empty($args[0][0]['rFonts_hAnsiTheme']) &&
-            !empty($args[0][0]['rFonts_cstheme'])) ||
-            $args[0][0]['b'] == 1 ||
-            $args[0][0]['bCs'] == 1 ||
-            $args[0][0]['i'] == 1 ||
-            $args[0][0]['iCs'] == 1 ||
-            $args[0][0]['u'] == 1 ||
-            !empty($args[0][0]['color_val']) ||
-            !empty($args[0][0]['sz']) ||
-            !empty($args[0][0]['szCs']) ||
-            !empty($args[0][0]['kern']) ||
-            !empty($args[0][0]['rPr_spacing']) ||
-            !empty($args[0][0]['u']) ||
-            !empty($args[0][0]['vertAlign'])) {
+        if ((isset($args[0][0]['rFonts_asciiTheme']) &&
+            isset($args[0][0]['rFonts_eastAsiaTheme']) &&
+            isset($args[0][0]['rFonts_hAnsiTheme']) &&
+            isset($args[0][0]['rFonts_cstheme'])) ||
+            isset($args[0][0]['b']) ||
+            isset($args[0][0]['bCs']) ||
+            isset($args[0][0]['i']) ||
+            isset($args[0][0]['iCs']) ||
+            isset($args[0][0]['u']) ||
+            isset($args[0][0]['color_val']) ||
+            isset($args[0][0]['sz']) ||
+            isset($args[0][0]['szCs']) ||
+            isset($args[0][0]['kern']) ||
+            isset($args[0][0]['rPr_spacing']) ||
+            isset($args[0][0]['u']) ||
+            isset($args[0][0]['vertAlign'])) {
             $this->generateRPR();
-            if (!empty($args[0][0]['rFonts_asciiTheme']) &&
-                !empty($args[0][0]['rFonts_eastAsiaTheme']) &&
-                !empty($args[0][0]['rFonts_hAnsiTheme']) &&
-                !empty($args[0][0]['rFonts_cstheme']))
+            if (isset($args[0][0]['rFonts_asciiTheme']) &&
+                isset($args[0][0]['rFonts_eastAsiaTheme']) &&
+                isset($args[0][0]['rFonts_hAnsiTheme']) &&
+                isset($args[0][0]['rFonts_cstheme']))
                 $this->generateRFONTS(
                     $args[0][0]['rFonts_asciiTheme'],
                     $args[0][0]['rFonts_eastAsiaTheme'],
@@ -228,19 +237,19 @@ class CreateStyle extends CreateElement
                     $args[0][0]['rFonts_cstheme']
                 );
 
-            if (!empty($args[0][0]['rFonts_ascii']) &&
-                !empty($args[0][0]['rFonts_hAnsi']) &&
-                !empty($args[0][0]['rFonts_cs'])) {
+            if (isset($args[0][0]['rFonts_ascii']) &&
+                isset($args[0][0]['rFonts_hAnsi']) &&
+                isset($args[0][0]['rFonts_cs'])) {
                 $this->generateRFONTS2(
                     $args[0][0]['rFonts_ascii'],
                     $args[0][0]['rFonts_hAnsi'],
                     $args[0][0]['rFonts_cs']
                 );
             }
-            if (isset($args[0][0]['b']) && $args[0][0]['b'] == 1) {
+            if (isset($args[0][0]['b'])) {
                 $this->generateB();
             }
-            if (isset($args[0][0]['bCs']) && $args[0][0]['bCs'] == 1) {
+            if (isset($args[0][0]['bCs'])) {
                 $this->generateBCS();
             }
             if (isset($args[0][0]['i'])) {
@@ -249,32 +258,39 @@ class CreateStyle extends CreateElement
             if (isset($args[0][0]['iCs'])) {
                 $this->generateICS($args[0][0]['iCs']);
             }
-            if (isset($args[0][0]['u']) && $args[0][0]['u'] == 1) {
+            if (isset($args[0][0]['u'])) {
                 $this->generateU();
             }
-            if (!empty($args[0][0]['color_val'])) {
+            if (isset($args[0][0]['color_val'])) {
+                if (!isset($args[0][0]['color_themeColor'])) {
+                    $args[0][0]['color_themeColor'] = '';
+                }
+                if (!isset($args[0][0]['color_themeShade'])) {
+                    $args[0][0]['color_themeShade'] = '';
+                }
+                
                 $this->generateCOLOR(
                     $args[0][0]['color_val'],
                     $args[0][0]['color_themeColor'],
                     $args[0][0]['color_themeShade']
                 );
             }
-            if (!empty($args[0][0]['u'])) {
+            if (isset($args[0][0]['u'])) {
                 $this->generateU($args[0][0]['u']);
             }
-            if (!empty($args[0][0]['rPr_spacing'])) {
+            if (isset($args[0][0]['rPr_spacing'])) {
                 $this->generateRPR_SPACING($args[0][0]['rPr_spacing']);
             }
-            if (!empty($args[0][0]['kern'])) {
+            if (isset($args[0][0]['kern'])) {
                 $this->generateKERN($args[0][0]['kern']);
             }
-            if (!empty($args[0][0]['sz'])) {
+            if (isset($args[0][0]['sz'])) {
                 $this->generateSZ($args[0][0]['sz']);
             }
-            if (!empty($args[0][0]['szCs'])) {
+            if (isset($args[0][0]['szCs'])) {
                 $this->generateSZCS($args[0][0]['szCs']);
             }
-            if (!empty($args[0][0]['vertAlign'])) {
+            if (isset($args[0][0]['vertAlign'])) {
                 $this->generateVERTALIGN($args[0][0]['vertAlign']);
             }
         }
@@ -321,6 +337,22 @@ class CreateStyle extends CreateElement
                 $this->generateTBLBORDERS();
 
                 if (isset($args[0][0]['tblborder_top_val'])) {
+                    if (!isset($args[0][0]['tblborder_top_sz'])) {
+                        $args[0][0]['tblborder_top_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_top_space'])) {
+                        $args[0][0]['tblborder_top_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_top_color'])) {
+                        $args[0][0]['tblborder_top_color'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_top_themeColor'])) {
+                        $args[0][0]['tblborder_top_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_TOP(
                         $args[0][0]['tblborder_top_val'],
                         $args[0][0]['tblborder_top_sz'],
@@ -331,6 +363,22 @@ class CreateStyle extends CreateElement
                     );
                 }
                 if (isset($args[0][0]['tblborder_left_val'])) {
+                    if (!isset($args[0][0]['tblborder_left_sz'])) {
+                        $args[0][0]['tblborder_left_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_left_space'])) {
+                        $args[0][0]['tblborder_left_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_left_color'])) {
+                        $args[0][0]['tblborder_left_color'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_left_themeColor'])) {
+                        $args[0][0]['tblborder_left_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_LEFT(
                         $args[0][0]['tblborder_left_val'],
                         $args[0][0]['tblborder_left_sz'],
@@ -341,6 +389,22 @@ class CreateStyle extends CreateElement
                     );
                 }
                 if (isset($args[0][0]['tblborder_bottom_val'])) {
+                    if (!isset($args[0][0]['tblborder_bottom_sz'])) {
+                        $args[0][0]['tblborder_bottom_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_bottom_space'])) {
+                        $args[0][0]['tblborder_bottom_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_bottom_color'])) {
+                        $args[0][0]['tblborder_bottom_color'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_bottom_themeColor'])) {
+                        $args[0][0]['tblborder_bottom_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_BOTTOM(
                         $args[0][0]['tblborder_bottom_val'],
                         $args[0][0]['tblborder_bottom_sz'],
@@ -351,6 +415,22 @@ class CreateStyle extends CreateElement
                     );
                 }
                 if (isset($args[0][0]['tblborder_right_val'])) {
+                    if (!isset($args[0][0]['tblborder_right_sz'])) {
+                        $args[0][0]['tblborder_right_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_right_space'])) {
+                        $args[0][0]['tblborder_right_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_right_color'])) {
+                        $args[0][0]['tblborder_right_color'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_right_themeColor'])) {
+                        $args[0][0]['tblborder_right_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_RIGHT(
                         $args[0][0]['tblborder_right_val'],
                         $args[0][0]['tblborder_right_sz'],
@@ -361,6 +441,22 @@ class CreateStyle extends CreateElement
                     );
                 }
                 if (isset($args[0][0]['tblborder_insideH_val'])) {
+                    if (!isset($args[0][0]['tblborder_insideH_sz'])) {
+                        $args[0][0]['tblborder_insideH_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideH_space'])) {
+                        $args[0][0]['tblborder_insideH_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideH_color'])) {
+                        $args[0][0]['tblborder_insideH_color'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideH_themeColor'])) {
+                        $args[0][0]['tblborder_insideH_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_INSIDEH(
                         $args[0][0]['tblborder_insideH_val'],
                         $args[0][0]['tblborder_insideH_sz'],
@@ -371,6 +467,22 @@ class CreateStyle extends CreateElement
                     );
                 }
                 if (isset($args[0][0]['tblborder_insideV_val'])) {
+                    if (!isset($args[0][0]['tblborder_insideV_sz'])) {
+                        $args[0][0]['tblborder_insideV_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_sz'])) {
+                        $args[0][0]['tblborder_insideV_sz'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_space'])) {
+                        $args[0][0]['tblborder_insideV_space'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeColor'])) {
+                        $args[0][0]['tblborder_insideV_themeColor'] = '';
+                    }
+                    if (!isset($args[0][0]['tblborder_insideV_themeTint'])) {
+                        $args[0][0]['tblborder_insideV_themeTint'] = '';
+                    }
+                    
                     $this->generateTBLBORDERS_INSIDEV(
                         $args[0][0]['tblborder_insideV_val'],
                         $args[0][0]['tblborder_insideV_sz'],
@@ -451,7 +563,7 @@ class CreateStyle extends CreateElement
      */
     public function createStyle($lang = 'en-US')
     {
-        $this->_xml .= '<w:docDefaults><w:rPrDefault><w:rPr>' .
+        $this->_xml = '<w:docDefaults><w:rPrDefault><w:rPr>' .
             '<w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTh' .
             'eme="minorHAnsi" w:hAnsiTheme="minorHAnsi" w:cst' .
             'heme="minorBidi"/><w:sz w:val="22"/><w:szCs w:val="22"/>' .

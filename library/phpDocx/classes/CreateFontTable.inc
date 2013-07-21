@@ -5,27 +5,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    1.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create font table
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    1.0
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateFontTable extends CreateElement
 {
     /**
@@ -119,6 +107,39 @@ class CreateFontTable extends CreateElement
     }
 
     /**
+     * Generate w:charset
+     *
+     * @param string $val
+     * @access protected
+     */
+    protected function generateCHARSET($val = '00')
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD .
+               ':charset ' . CreateElement::NAMESPACEWORD .
+               ':val="' . $val . '"></' . CreateElement::NAMESPACEWORD .
+               ':charset>__GENERATECHARSET__';
+
+        $this->_xml = str_replace('__GENERATEPANOSE1__', $xml, $this->_xml);
+    }
+
+    /**
+     * Generate w:family
+     *
+     * @param string $val
+     * @access protected
+     */
+    protected function generateFAMILY($val = 'swiss')
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD .
+                ':family ' . CreateElement::NAMESPACEWORD .
+                ':val="' . $val .
+                '"></' . CreateElement::NAMESPACEWORD .
+                ':family>__GENERATEFAMILY__';
+
+        $this->_xml = str_replace('__GENERATECHARSET__', $xml, $this->_xml);
+    }
+
+    /**
      * Generate w:font
      *
      * @param string $name
@@ -148,39 +169,6 @@ class CreateFontTable extends CreateElement
                ':panose1>__GENERATEPANOSE1__';
 
         $this->_xml = str_replace('__GENERATEFONT__', $xml, $this->_xml);
-    }
-
-    /**
-     * Generate w:charset
-     *
-     * @param string $val
-     * @access protected
-     */
-    protected function generateCHARSET($val = '00')
-    {
-        $xml = '<' . CreateElement::NAMESPACEWORD .
-               ':charset ' . CreateElement::NAMESPACEWORD .
-               ':val="' . $val . '"></' . CreateElement::NAMESPACEWORD .
-               ':charset>__GENERATECHARSET__';
-
-        $this->_xml = str_replace('__GENERATEPANOSE1__', $xml, $this->_xml);
-    }
-    
-    /**
-     * Generate w:family
-     *
-     * @param string $val
-     * @access protected
-     */
-    protected function generateFAMILY($val = 'swiss')
-    {
-        $xml = '<' . CreateElement::NAMESPACEWORD .
-                ':family ' . CreateElement::NAMESPACEWORD .
-                ':val="' . $val .
-                '"></' . CreateElement::NAMESPACEWORD .
-                ':family>__GENERATEFAMILY__';
-        
-        $this->_xml = str_replace('__GENERATECHARSET__', $xml, $this->_xml);
     }
 
     /**

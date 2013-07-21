@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Create a DOCX file. Page break example
+ * Inserts a page break into the Word document.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.0
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
@@ -27,18 +27,18 @@ $text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
 
 $docx->addText($text);
 
-$docx->addBreak('line');
+$docx->addBreak(array('type' => 'line'));
 
 $docx->addText($text);
 
-$docx->addBreak('line');
+$docx->addBreak(array('type' => 'line'));
 
-$docx->addBreak('line');
-
-$docx->addText($text);
-
-$docx->addBreak('page');
+$docx->addBreak(array('type' => 'line'));
 
 $docx->addText($text);
 
-$docx->createDocx('example_pagebreak');
+$docx->addBreak(array('type' => 'page'));
+
+$docx->addText($text);
+
+$docx->createDocx('../docx/example_pagebreak');

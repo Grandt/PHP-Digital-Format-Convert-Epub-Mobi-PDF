@@ -1,35 +1,35 @@
 <?php
 
 /**
- * Create a DOCX file. Chart example
+ * Insert a pie chart into a Word document.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.0
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
 $docx = new CreateDocx();
 
 $legends = array(
-    'legend1' => array(10, 11, 12),
-    'legend2' => array(0, 1, 2),
-    'legend3' => array(40, 41, 42)
+    'legend1' => array(10),
+    'legend2' => array(20),
+    'legend3' => array(40)
 );
 
 $paramsChart = array(
     'data' => $legends,
-    'type' => 'pieChart',
+    'type' => 'pie3DChart',
     'title' => 'Title',
-    'cornerX' => 20, 
-    'cornerY' => 20,
-    'cornerP' => 30,
+    'rotX' => 20,
+    'rotY' => 20,
+    'perspective' => 30,
     'color' => 2,
     'textWrap' => 0,
     'sizeX' => 10,
@@ -38,6 +38,7 @@ $paramsChart = array(
     'showPercent' => 1,
     'font' => 'Times New Roman'
 );
-$docx->addGraphic($paramsChart);
+$docx->addChart($paramsChart);
 
-$docx->createDocx('example_chart');
+
+$docx->createDocx('../docx/example_chart');

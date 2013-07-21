@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE xsl:stylesheet [<!ENTITY nbsp "&#160;">]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -514,9 +514,7 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:if test="0.299 * number($r) + 0.587 * number($g) + 0.114 * number($b) &lt;= 60">
-        <xsl:text>color:#FFFFFF;</xsl:text>
-      </xsl:if>
+
     </xsl:if>
   </xsl:template>
 
@@ -4460,7 +4458,7 @@
         </xsl:variable>
         <xsl:attribute name="class">
           <xsl:value-of select="$pStyleId"/>
-          <!--<xsl:value-of select="$paraStyleSuffix"/>-->
+          <xsl:value-of select="$paraStyleSuffix"/>
         </xsl:attribute>
         <xsl:variable name="sParaStyleName" select="($nsStyles[@w:styleId=$pStyleId])[1]"/>
         <xsl:variable name="b.bidi">
@@ -6799,6 +6797,7 @@ if (msoBrowserCheck())
         <!--<xsl:if test="//w:body//w:sdt//w:sdtContent and //w:body/w:p/w:r/w:lastRenderedPageBreak"> --><!-- For coverpage Added by Parwati--><!--
           <xsl:text disable-output-escaping="yes">&lt;/div&gt;</xsl:text>
         </xsl:if>-->
+        <style>@page {$MARGIN$}</style>
       </body>
     </html>
   </xsl:template>

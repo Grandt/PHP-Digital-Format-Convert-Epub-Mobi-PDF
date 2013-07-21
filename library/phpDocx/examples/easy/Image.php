@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Create a DOCX file. Image example
+ * Insert an image into a Word document.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.0
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
@@ -21,9 +21,9 @@ $paramsImg = array(
     'name' => '../files/img/image.png',
     'scaling' => 50,
     'spacingTop' => 100,
-    'spacingBottom' => 0,
+    'spacingBottom' => 100,
     'spacingLeft' => 100,
-    'spacingRight' => 0,
+    'spacingRight' => 100,
     'textWrap' => 1,
     'border' => 1,
     'borderDiscontinuous' => 1
@@ -31,4 +31,4 @@ $paramsImg = array(
 
 $docx->addImage($paramsImg);
 
-$docx->createDocx('example_image');
+$docx->createDocx('../docx/example_image');

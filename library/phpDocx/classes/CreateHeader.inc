@@ -5,27 +5,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    1.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create header
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    1.0
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateHeader extends CreateElement
 {
     /**
@@ -63,6 +51,7 @@ class CreateHeader extends CreateElement
      */
     public function __toString()
     {
+        $this->_xml = preg_replace('/__[A-Z]+__/', '', $this->_xml);
         return $this->_xml;
     }
 
@@ -78,30 +67,6 @@ class CreateHeader extends CreateElement
             self::$_instance = new CreateHeader();
         }
         return self::$_instance;
-    }
-
-    /**
-     * Generate w:p
-     *
-     * @access protected
-     */
-    protected function generateP()
-    {
-        $xml = '<' . CreateElement::NAMESPACEWORD .
-                ':p>__GENERATEP__</' . CreateElement::NAMESPACEWORD .
-                ':p>__GENERATEHDR__';
-
-        $this->_xml = str_replace('__GENERATEHDR__', $xml, $this->_xml);
-    }
-
-    /**
-     * Generate hdr token
-     *
-     * @access protected
-     */
-    protected function generateHDR()
-    {
-        $this->_xml = '__GENERATEHDR____GENERATEHDRIMG__';
     }
 
     /**
@@ -123,6 +88,30 @@ class CreateHeader extends CreateElement
             '__GENERATEHDR__', (string) $text . '__GENERATEHDR__',
             $this->_xml
         );
+    }
+
+    /**
+     * Generate hdr token
+     *
+     * @access protected
+     */
+    protected function generateHDR()
+    {
+        $this->_xml = '__GENERATEHDR____GENERATEHDRIMG__';
+    }
+
+    /**
+     * Generate w:p
+     *
+     * @access protected
+     */
+    protected function generateP()
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD .
+                ':p>__GENERATEP__</' . CreateElement::NAMESPACEWORD .
+                ':p>__GENERATEHDR__';
+
+        $this->_xml = str_replace('__GENERATEHDR__', $xml, $this->_xml);
     }
 
 }

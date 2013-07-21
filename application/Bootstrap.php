@@ -53,10 +53,10 @@
 		public function getTools() 
 		{
 			$libraryPath = "library";
-			require_once "$libraryPath/epub/Epub.inc.php";
-			require_once "$libraryPath/phpDocx/classes/TransformDoc.inc.php";
-			require_once "$libraryPath/mobi/Mobi.inc.php";
-			require_once "$libraryPath/mpdf/mpdf.inc.php";
+			require_once "$libraryPath/epub/EPub.php";
+			require_once "$libraryPath/phpDocx/classes/TransformDoc.inc";
+			require_once "$libraryPath/mobi/Mobi.php";
+			require_once "$libraryPath/mpdf/mpdf.php";
 
 			$this->tools['epubConverter'] = new EPub();
 			$this->tools['transformDoc'] = new TransformDoc;

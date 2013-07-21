@@ -5,27 +5,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    1.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create links using text strings
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    1.0
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateLink extends CreateElement
 {
 
@@ -134,6 +122,32 @@ class CreateLink extends CreateElement
     }
 
     /**
+     * Create an embedded link to add in others elements like lists, tables...
+     *
+     * @access public
+     */
+    public function createEmbeddedLink()
+    {
+        $this->_xml = '';
+
+        $this->generateR();
+        $this->generateFLDCHAR('begin');
+        $this->generateR();
+        $this->generateINSTRTEXT($this->_title);
+        $this->generateR();
+        $this->generateFLDCHAR('separate');
+        $this->generatePROOFERR('gramStart');
+        $this->generateR();
+        $this->generateRPR();
+        $this->generateRFONTS($this->_font);
+        $this->generateRSTYLE('Hipervnculo');
+        $this->generateT($this->_link);
+        $this->generatePROOFERR('gramEnd');
+        $this->generateR();
+        $this->generateFLDCHAR('end');
+    }
+
+    /**
      * Create a link
      *
      * @access public
@@ -156,12 +170,39 @@ class CreateLink extends CreateElement
         $this->generatePROOFERR('gramStart');
         $this->generateR();
         $this->generateRPR();
-        $this->generateRFONTS($args[2]);
         $this->generateRSTYLE('Hipervnculo');
+        $this->generateRFONTS($args[2]);
         $this->generateT($args[0]);
         $this->generatePROOFERR('gramEnd');
         $this->generateR();
         $this->generateFLDCHAR('end');
+    }
+
+    /**
+     * Init a link to assign values to variables
+     *
+     * @access public
+     * @param string $arrArgs[0]['title'] Text to add
+     * @param string $arrArgs[0]['link'] URL to add
+     * @param string $arrArgs[0]['font'] RFONTS
+     */
+    public function initLink()
+    {
+        $args = func_get_args();
+        
+        if (!isset($args[0]['title'])) {
+            $args[0]['title'] = '';
+        }
+        if (!isset($args[0]['link'])) {
+            $args[0]['link'] = '';
+        }
+        if (!isset($args[0]['font'])) {
+            $args[0]['font'] = '';
+        }
+
+        $this->_link = $args[0]['title'];
+        $this->_title = $args[0]['link'];
+        $this->_font = $args[0]['font'];
     }
 
     /**

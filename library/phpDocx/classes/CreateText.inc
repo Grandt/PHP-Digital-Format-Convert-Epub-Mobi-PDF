@@ -5,27 +5,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    1.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create text
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    1.0
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateText extends CreateElement
 {
     const IDTITLE = 229998237;
@@ -43,7 +31,7 @@ class CreateText extends CreateElement
     private static $_idTitle = 0;
 
     /**
-     * Destruct
+     * Construct
      *
      * @access public
      */
@@ -101,132 +89,186 @@ class CreateText extends CreateElement
         $args = func_get_args();
 
         $this->generateP();
-        if (!is_array($args[0])) {
-            if (
-                !empty($args[1]['jc']) ||
-                !empty($args[1]['pageBreakBefore']) ||
-                !empty($args[1]['widowControl']) ||
-                !empty($args[1]['wordWrap'])
-            ) {
-                $this->generatePPR();
-                if (!empty($args[1]['jc']))
-                    $this->generateJC($args[1]['jc']);
-                if (!empty($args[1]['pageBreakBefore']))
-                    $this->generatePAGEBREAKBEFORE($args[1]['pageBreakBefore']);
-                if (!empty($args[1]['widowControl']))
-                    $this->generateWIDOWCONTROL($args[1]['widowControl']);
-                if (!empty($args[1]['wordWrap']))
-                    $this->generateWORDWRAP($args[1]['wordWrap']);
+
+        $this->generatePPR();
+        if (!empty($args[1]['pStyle'])) {
+            $this->generatePSTYLE($args[1]['pStyle']);
+        }
+        if (!empty($args[1]['keepNext'])) {
+            $this->generateKEEPNEXT($args[1]['keepNext']);
+        }
+        if (!empty($args[1]['keepLines'])) {
+            $this->generateKEEPLINES($args[1]['keepLines']);
+        }
+        if (!empty($args[1]['jc'])) {
+            $this->generateJC($args[1]['jc']);
+        }
+        if (!empty($args[1]['pageBreakBefore'])) {
+            $this->generatePAGEBREAKBEFORE($args[1]['pageBreakBefore']);
+        }
+        if (!empty($args[1]['widowControl'])) {
+            $this->generateWIDOWCONTROL($args[1]['widowControl']);
+        }
+        if (!empty($args[1]['tabPositions']) && is_array($args[1]['tabPositions'])) {
+            $this->generateTABPOSITIONS($args[1]['tabPositions']);
+        }
+        if (!empty($args[1]['wordWrap'])) {
+            $this->generateWORDWRAP($args[1]['wordWrap']);
+        }
+        if (!empty($args[1]['lineSpacing']) ||
+            !empty($args[1]['spacingTop']) ||
+            !empty($args[1]['spacingBottom'])) {
+                if(empty($args[1]['lineSpacing'])){
+                   $args[1]['lineSpacing'] = 240;
+                }
+                if(empty($args[1]['spacingTop'])){
+                   $args[1]['spacingTop'] = '';
+                }
+                if(empty($args[1]['spacingBottom'])){
+                   $args[1]['spacingBottom'] = '';
+                }
+                $this->generateSPACING($args[1]['lineSpacing'], $args[1]['spacingTop'], $args[1]['spacingBottom']);
+        }
+        if (
+            !empty($args[1]['indent_left']) ||
+            !empty($args[1]['indent_right'])
+        ) {
+            if (!!empty($args[1]['indent_left'])) {
+                $args[1]['indent_left'] = '';
             }
+            if (!!empty($args[1]['indent_right'])) {
+                $args[1]['indent_right'] = '';
+            }
+
+            $this->generateINDENT($args[1]['indent_left'],
+                $args[1]['indent_right']);
+        }
+        if (!empty($args[1]['contextualSpacing'])) {
+            $this->generateCONTEXTUALSPACING($args[1]['contextualSpacing']);
+        }
+        if (!empty($args[1]['textDirection'])) {
+            $this->generateTEXTDIRECTION($args[1]['textDirection']);
+        }
+        if (!empty($args[1]['headingLevel'])) {
+            $this->generateHEADINGLEVEL($args[1]['headingLevel']);
+        }
+        //We include now paragraph wide run properties
+            $this->generatePPRRPR();
+            if (!empty($args[1]['rStyle'])) {
+                $this->generateRSTYLE($args[1]['rStyle']);
+            }
+            if (!empty($args[1]['font'])) {
+                $this->generateRFONTS($args[1]['font']);
+            }
+            if (!empty($args[1]['b'])) {
+                $this->generateB($args[1]['b']);
+            }
+            if (!empty($args[1]['i'])) {
+                $this->generateI($args[1]['i']);
+            }
+            if (!empty($args[1]['caps'])) {
+                $this->generateCAPS($args[1]['caps']);
+            }
+            if (!empty($args[1]['color'])) {
+                $this->generateCOLOR($args[1]['color']);
+            }
+            if (!empty($args[1]['sz'])) {
+                $this->generateSZ($args[1]['sz']);
+            }
+            if (!empty($args[1]['u'])) {
+                $this->generateU($args[1]['u']);
+            }
+            if (!empty($args[1]['tab']) && $args[1]['tab']) {
+                $this->generateTABS();
+            }
+            $this->cleanTemplateFirstRPR();
+
             $this->generateR();
-            if (
-                $args[1]['b'] != '' ||
-                $args[1]['i'] != '' ||
-                $args[1]['u'] != '' ||
-                $args[1]['sz'] != '' ||
-                $args[1]['color'] != '' ||
-                $args[1]['font'] != '' ||
-                $args[1]['tabs'] != ''
-            ) {
-                $this->generateRPR();
-                if (isset($args[1]['font']) && $args[1]['font'] != '') {
-                    $this->generateRFONTS($args[1]['font']);
-                }
-                if (isset($args[1]['b']) && $args[1]['b'] != '') {
-                    $this->generateB($args[1]['b']);
-                }
-                if (isset($args[1]['i']) && $args[1]['i'] != '') {
-                    $this->generateI($args[1]['i']);
-                }
-                if (isset($args[1]['u']) && $args[1]['u'] != '') {
-                    $this->generateU($args[1]['u']);
-                }
-                if (isset($args[1]['sz']) && $args[1]['sz'] != '') {
-                    $this->generateSZ($args[1]['sz']);
-                }
-                if (isset($args[1]['color']) && $args[1]['color'] != '') {
-                    $this->generateCOLOR($args[1]['color']);
-                }
+            $this->generateRPR();
+            if (!empty($args[1]['rStyle'])) {
+                $this->generateRSTYLE($args[1]['rStyle']);
             }
-            $this->generateT($args[0], $args[1]['spaces']);
+            if (!empty($args[1]['font'])) {
+                $this->generateRFONTS($args[1]['font']);
+            }
+            if (!empty($args[1]['b'])) {
+                $this->generateB($args[1]['b']);
+            }
+            if (!empty($args[1]['i'])) {
+                $this->generateI($args[1]['i']);
+            }
+            if (!empty($args[1]['caps'])) {
+                $this->generateCAPS($args[1]['caps']);
+            }
+            if (!empty($args[1]['color'])) {
+                $this->generateCOLOR($args[1]['color']);
+            }
+            if (!empty($args[1]['sz'])) {
+                $this->generateSZ($args[1]['sz']);
+            }
+            if (!empty($args[1]['u'])) {
+                $this->generateU($args[1]['u']);
+            }
+            if (!empty($args[1]['tab']) && $args[1]['tab']) {
+                $this->generateTABS();
+            }
+            if (empty($args[1]['spaces'])) {
+                $args[1]['spaces'] = '';
+            }
+            if (!isset($args[1]['lineBreak'])) {
+                    $args[1]['lineBreak'] = false;
+            }
+            if (!isset($args[1]['columnBreak'])) {
+                    $args[1]['columnBreak'] = false;
+            $this->generateT($args[0], $args[1]['spaces'], $args[1]['lineBreak'], $args[1]['columnBreak']);
+            $this->cleanTemplateFirstRPR();
         }
     }
 
     /**
-     * Create title
+     * Init text
      *
-     * @access protected
-     * @param string $arrArgs[0]
-     * @param array $arrArgs[1]
+     * @access public
+     * @param array $args[0]
      */
-    public function createTitle()
+    public function initText()
     {
-        $this->_xml = '';
         $args = func_get_args();
-        if (!empty($args[1]['val']) && !empty($args[0])) {
-            $this->generateP();
-            $this->generatePPR();
-            if ($args[1]['type'] == 'subtitle')
-                $this->generatePSTYLE('Subttulo' . $args[1]['val']);
-            else
-                $this->generatePSTYLE('Ttulo' . $args[1]['val']);
-            if (!empty($args[1]['pageBreakBefore']))
-                $this->generatePAGEBREAKBEFORE($args[1]['pageBreakBefore']);
-            if (!empty($args[1]['widowControl']))
-                $this->generateWIDOWCONTROL($args[1]['widowControl']);
-            if (!empty($args[1]['wordWrap']))
-                $this->generateWORDWRAP($args[1]['wordWrap']);
-            self::$_idTitle++;
-            $this->generateBOOKMARKSTART(
-                self::$_idTitle, '_Toc' . (self::$_idTitle + self::IDTITLE)
-            );
-            $this->generateR();
-            if (
-                $args[1]['b'] != '' ||
-                $args[1]['i'] != '' ||
-                $args[1]['u'] != '' ||
-                $args[1]['sz'] != '' ||
-                $args[1]['color'] != '' ||
-                $args[1]['font'] != ''
-            ) {
-                $this->generateRPR();
-                if ($args[1]['font'] != '') {
-                    $this->generateRFONTS($args[1]['font']);
-                }
-                if ($args[1]['b'] != '') {
-                    $this->generateB($args[1]['b']);
-                }
-                if ($args[1]['i'] != '') {
-                    $this->generateI($args[1]['i']);
-                }
-                if ($args[1]['u'] != '') {
-                    $this->generateU($args[1]['u']);
-                }
-                if ($args[1]['sz'] != '') {
-                    $this->generateSZ($args[1]['sz']);
-                }
-                if ($args[1]['color'] != '') {
-                    $this->generateCOLOR($args[1]['color']);
-                }
-            }
-            $this->generateT($args[0]);
-            $this->generateBOOKMARKEND(self::$_idTitle);
-            $this->cleanTemplate();
-        }
+
+        $this->_embeddedText = $args[0];
     }
 
     /**
-     * Generate w:b
+     * Generate w:bookmarkend
      *
      * @access protected
-     * @param string $val
+     * @param int $id
      */
-    protected function generateB($strVal = 'single')
+    protected function generateBOOKMARKEND($id)
     {
-        $element = '<' . CreateElement::NAMESPACEWORD . ':b ' .
-                CreateElement::NAMESPACEWORD . ':val="' . $strVal . '"></' .
-                CreateElement::NAMESPACEWORD . ':b>__GENERATERPR__';
-        $this->_xml = str_replace('__GENERATERPR__', $element, $this->_xml);
+        $this->_xml = str_replace(
+            '__GENERATEBOOKMARKEND__', '<' . CreateElement::NAMESPACEWORD .
+            ':bookmarkEnd ' . CreateElement::NAMESPACEWORD . ':id="' . $id .
+            '"></' . CreateElement::NAMESPACEWORD . ':bookmarkEnd>', $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:bookmarkstart
+     *
+     * @access protected
+     * @param int $id
+     * @param string $name
+     */
+    protected function generateBOOKMARKSTART($id, $name)
+    {
+        $this->_xml = str_replace(
+            '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
+            ':bookmarkStart ' . CreateElement::NAMESPACEWORD . ':id="' . $id .
+            '" ' . CreateElement::NAMESPACEWORD . ':name="' . $name . '"></' .
+            CreateElement::NAMESPACEWORD .
+            ':bookmarkStart>__GENERATER____GENERATEBOOKMARKEND__', $this->_xml
+        );
     }
 
     /**
@@ -245,18 +287,52 @@ class CreateText extends CreateElement
     }
 
     /**
-     * Generate w:jc
+     * Generate w:contextualSpacing
      *
      * @access protected
      * @param string $val
      */
-    protected function generateJC($val = '')
+    protected function generateCONTEXTUALSPACING($val = 'on')
     {
         $this->_xml = str_replace(
-            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':jc ' .
-            CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
-            CreateElement::NAMESPACEWORD . ':jc>__GENERATESZ__', $this->_xml
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+            ':contextualSpacing w:val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':contextualSpacing>__GENERATEPPR__',
+            $this->_xml
         );
+    }
+
+    /**
+     * Generate w:caps
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateCAPS($val = 'on')
+    {
+        $this->_xml = str_replace(
+            '__GENERATERPR__', '<' . CreateElement::NAMESPACEWORD . ':caps ' .
+            CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':caps>__GENERATERPR__', $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:outlineLvl
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateHEADINGLEVEL($val)
+    {
+        if(is_integer($val) && $val > 0){
+            $this->_xml = str_replace(
+                '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+                ':outlineLvl w:val="' . $val . '"></' .
+                CreateElement::NAMESPACEWORD . ':outlineLvl>__GENERATEPPR__',
+                $this->_xml
+            );
+        }
     }
 
     /**
@@ -272,6 +348,155 @@ class CreateText extends CreateElement
             CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
             CreateElement::NAMESPACEWORD . ':i>__GENERATERPR__', $this->_xml
         );
+    }
+
+    /**
+     * Generate w:ind
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateINDENT($indent_left = 0, $indent_right = 0)
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':ind ' .
+            CreateElement::NAMESPACEWORD . ':left="' . $indent_left . '" ' .
+            CreateElement::NAMESPACEWORD . ':right="' . $indent_right .
+            '"></' . CreateElement::NAMESPACEWORD . ':ind>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:keepLines
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateKEEPLINES($val = 'on')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+            ':keepLines w:val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':keepLines>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:keepNext
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateKEEPNEXT($val = 'on')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+            ':keepNext w:val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':keepNext>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:jc
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateJC($val = '')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':jc ' .
+            CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':jc>__GENERATEPPR__', $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:pagebreakbefore
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generatePAGEBREAKBEFORE($val = 'on')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+            ':pageBreakBefore val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':pageBreakBefore>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:ppr
+     *
+     * @access protected
+     */
+    protected function generatePPR()
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD . ':pPr>__GENERATEPPR__</' . CreateElement::NAMESPACEWORD .
+               ':pPr>__GENERATER__';
+
+        $this->_xml = str_replace('__GENERATEP__', $xml, $this->_xml);
+    }
+
+    /**
+     * Generate w:rPr within a w:pPr tag
+     *
+     * @access protected
+     */
+    protected function generatePPRRPR()
+    {
+        /*$xml = '<' . CreateElement::NAMESPACEWORD .
+                ':rPr>__GENERATERPR__</' . CreateElement::NAMESPACEWORD .
+                ':rPr>__GENERATER__';
+
+        $this->_xml = str_replace('__GENERATER__', $xml, $this->_xml);*/
+
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':rPr >__GENERATERPR__</' .
+            CreateElement::NAMESPACEWORD . ':rPr>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:pstyle
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generatePSTYLE($val = 'TitlePHPDOCX')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':pStyle ' .
+            CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':pStyle>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:spacing
+     *
+     * @access protected
+     */
+    protected function generateSPACING($line = '240', $spacingTop, $spacingBottom)
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD . ':spacing ';
+        if(!empty($spacingTop)){
+            $xml .= CreateElement::NAMESPACEWORD . ':before="' . (int) $spacingTop . '" ';
+        }
+        if(!empty($spacingBottom)){
+            $xml .= CreateElement::NAMESPACEWORD . ':after="' . (int) $spacingBottom . '" ';
+        }
+        $xml .= CreateElement::NAMESPACEWORD . ':line="' . $line  .
+               '" ' . CreateElement::NAMESPACEWORD . ':lineRule="auto"/>__GENERATEPPR__';
+
+        $this->_xml = str_replace('__GENERATEPPR__', $xml, $this->_xml);
     }
 
     /**
@@ -291,6 +516,129 @@ class CreateText extends CreateElement
     }
 
     /**
+     * Generate w:t
+     *
+     * @access protected
+     * @param string $dat
+     * @param int $spaces
+     * @param string $lineBreak
+     * @param string $columnBreak
+     */
+    protected function generateT($dat, $spaces = 0, $lineBreak = false, $columnBreak = false)
+    {
+        $strSpaces = '';
+        if ($spaces) {
+            $i = 0;
+            while ($i < $spaces) {
+                $strSpaces .= ' ';
+                $i++;
+            }
+        }
+        if($lineBreak == 'before'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<w:br /><' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t>', $this->_xml
+            );
+        }else if($lineBreak == 'after'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t><w:br />', $this->_xml
+            );
+        }else if($lineBreak == 'both'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<w:br /><' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t><w:br />', $this->_xml
+            );
+        }else if($columnBreak == 'before'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<w:br w:type="column" /><' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t>', $this->_xml
+            );
+        }else if($columnBreak == 'after'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t><w:br w:type="column" />', $this->_xml
+            );
+        }else if($columnBreak == 'both'){
+            $this->_xml = str_replace(
+                '__GENERATER__', '<w:br w:type="column" /><' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t><w:br w:type="column" />', $this->_xml
+            );
+        }else{
+            $this->_xml = str_replace(
+                '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
+                ':t xml:space="preserve">' . $strSpaces . htmlspecialchars($dat) . '</' .
+                CreateElement::NAMESPACEWORD . ':t>', $this->_xml
+            );
+        }
+    }
+
+    /**
+     * Generate w:abs
+     *
+     * @access protected
+     * @param array $tabs
+     */
+    protected function generateTABPOSITIONS($tabs)
+    {
+        $typesArray = array('clear', 'left', 'center', 'right', 'decimal', 'bar', 'num');
+        $leaderArray = array('none', 'dot', 'hyphen', 'underscore', 'heavy', 'middleDot');
+        $xml = '<w:tabs>';
+        foreach($tabs as $key => $tab){
+            if(isset($tab['type']) && in_array($tab['type'], $typesArray)){
+                $type = $tab['type'];
+            }else{
+                $type = 'left';
+            }
+            if(isset($tab['leader']) && in_array($tab['leader'], $leaderArray)){
+                $leader = $tab['leader'];
+            }else{
+                $leader = 'none';
+            }
+            if(isset($tab['position']) && is_int($tab['position'])){
+                $xml .='<w:tab w:val="' . $type . '" w:leader="' . $leader . '" w:pos="' . (int) $tab['position'] . '" />';
+            }
+        }
+        $xml .='</w:tabs>';
+        $this->_xml = str_replace('__GENERATEPPR__', $xml . '__GENERATEPPR__', $this->_xml);
+    }
+
+    /**
+     * Generate w:abs
+     *
+     * @access protected
+     */
+    protected function generateTABS()
+    {
+        $this->_xml = str_replace(
+            '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
+             ':tab/>__GENERATER__', $this->_xml
+        );
+    }
+
+    /**
+     * Generate w:textDirection
+     *
+     * @access protected
+     * @param string $val
+     */
+    protected function generateTEXTDIRECTION($val = 'lrTb')
+    {
+        $this->_xml = str_replace(
+            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
+            ':textDirection w:val="' . $val . '"></' .
+            CreateElement::NAMESPACEWORD . ':textDirection>__GENERATEPPR__',
+            $this->_xml
+        );
+    }
+
+    /**
      * Generate w:u
      *
      * @access protected
@@ -302,38 +650,6 @@ class CreateText extends CreateElement
             '__GENERATERPR__', '<' . CreateElement::NAMESPACEWORD . ':u ' .
             CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
             CreateElement::NAMESPACEWORD . ':u>__GENERATERPR__', $this->_xml
-        );
-    }
-
-    /**
-     * Generate w:pstyle
-     *
-     * @access protected
-     * @param string $val
-     */
-    protected function generatePSTYLE($val = 'Ttulo')
-    {
-        $this->_xml = str_replace(
-            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD . ':pStyle ' .
-            CreateElement::NAMESPACEWORD . ':val="' . $val . '"></' .
-            CreateElement::NAMESPACEWORD . ':pStyle>__GENERATEPPR__',
-            $this->_xml
-        );
-    }
-
-    /**
-     * Generate w:pagebreakbefore
-     *
-     * @access protected
-     * @param string $val
-     */
-    protected function generatePAGEBREAKBEFORE($val = 'on')
-    {
-        $this->_xml = str_replace(
-            '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
-            ':pageBreakBefore val="' . $val . '"></' .
-            CreateElement::NAMESPACEWORD . ':pageBreakBefore>__GENERATEPPR__',
-            $this->_xml
         );
     }
 
@@ -365,39 +681,6 @@ class CreateText extends CreateElement
             '__GENERATEPPR__', '<' . CreateElement::NAMESPACEWORD .
             ':wordWrap val="' . $val . '"></' . CreateElement::NAMESPACEWORD .
             ':wordWrap>__GENERATEPPR__', $this->_xml
-        );
-    }
-
-    /**
-     * Generate w:bookmarkstart
-     *
-     * @access protected
-     * @param int $id
-     * @param string $name
-     */
-    protected function generateBOOKMARKSTART($id, $name)
-    {
-        $this->_xml = str_replace(
-            '__GENERATER__', '<' . CreateElement::NAMESPACEWORD .
-            ':bookmarkStart ' . CreateElement::NAMESPACEWORD . ':id="' . $id .
-            '" ' . CreateElement::NAMESPACEWORD . ':name="' . $name . '"></' .
-            CreateElement::NAMESPACEWORD .
-            ':bookmarkStart>__GENERATER____GENERATEBOOKMARKEND__', $this->_xml
-        );
-    }
-
-    /**
-     * Generate w:bookmarkend
-     *
-     * @access protected
-     * @param int $id
-     */
-    protected function generateBOOKMARKEND($id)
-    {
-        $this->_xml = str_replace(
-            '__GENERATEBOOKMARKEND__', '<' . CreateElement::NAMESPACEWORD .
-            ':bookmarkEnd ' . CreateElement::NAMESPACEWORD . ':id="' . $id .
-            '"></' . CreateElement::NAMESPACEWORD . ':bookmarkEnd>', $this->_xml
         );
     }
 

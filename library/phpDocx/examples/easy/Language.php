@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Create a DOCX file. Text example
+ * Insert a simple text and set up the document language.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    2.1
+ * @license    LGPL
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.1
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
@@ -26,12 +26,12 @@ $text = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
     'officia deserunt mollit anim id est laborum.';
 
 $paramsText = array(
-    'b' => 'single',
+    'b' => 'on',
     'font' => 'Arial'
 );
 
 $docx->addText($text, $paramsText);
 
-$docx->setLanguage('es_ES');
+$docx->setLanguage('es-ES');
 
-$docx->createDocx('example_language');
+$docx->createDocx('../docx/example_language');

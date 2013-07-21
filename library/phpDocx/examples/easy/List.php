@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Create a DOCX file. List example
+ * Insert an unordered list into a Word document.
  *
  * @category   Phpdocx
  * @package    examples
  * @subpackage easy
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    2.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 2.0
+ * @since      File available since Release 3.0
  */
 require_once '../../classes/CreateDocx.inc';
 
@@ -31,4 +31,4 @@ $paramsList = array(
 
 $docx->addList($valuesList, $paramsList);
 
-$docx->createDocx('example_list');
+$docx->createDocx('../docx/example_list');

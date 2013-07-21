@@ -5,27 +5,15 @@
  *
  * @category   Phpdocx
  * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
+ * @copyright  Copyright (c) Narcea Producciones Multimedia S.L.
  *             (http://www.2mdc.com)
  * @license    LGPL
- * @version    1.0
+ * @version    3.0
  * @link       http://www.phpdocx.com
- * @since      File available since Release 1.0
+ * @since      File available since Release 3.0
  */
 include_once dirname(__FILE__) . '/CreateElement.inc';
 
-/**
- * Create footer
- *
- * @category   Phpdocx
- * @package    elements
- * @copyright  Copyright (c) 2009-2011 Narcea Producciones Multimedia S.L.
- *             (http://www.2mdc.com)
- * @license    http://www.phpdocx.com/wp-content/themes/lightword/pro_license.php
- * @version    1.0
- * @link       http://www.phpdocx.com
- * @since      Class available since Release 1.0
- */
 class CreateFooter extends CreateElement
 {
     /**
@@ -71,6 +59,7 @@ class CreateFooter extends CreateElement
      */
     public function __toString()
     {
+        $this->_xml = preg_replace('/__[A-Z]+__/', '', $this->_xml);
         return $this->_xml;
     }
 
@@ -100,7 +89,7 @@ class CreateFooter extends CreateElement
         $this->_xml = '';
         $args = func_get_args();
         $this->generateFTR();
-        if ($args[1]['pager'] == 'true') {
+        if (isset($args[1]['pager']) && $args[1]['pager'] == 'true') {
             $this->generateP();
             $this->generateR();
             $this->generatePTAB('margin', $args[1]['pagerAlignment']);
@@ -111,6 +100,21 @@ class CreateFooter extends CreateElement
         $obj = preg_replace('/__[A-Z]+__/', '', (string) $text);
         $xml = $obj . '__GENERATEFTR__';
         $this->_xml = str_replace('__GENERATEFTR__', $xml, $this->_xml);
+    }
+
+    /**
+     * Generate w:fldsimple
+     *
+     * @access protected
+     */
+    protected function generateFLDSIMPLE()
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD .
+                ':fldSimple ' . CreateElement::NAMESPACEWORD .
+                ':instr=" PAGE   \* MERGEFORMAT "></'
+                . CreateElement::NAMESPACEWORD . ':fldSimple>';
+
+        $this->_xml = str_replace('__GENERATERSUB__', $xml, $this->_xml);
     }
 
     /**
@@ -134,6 +138,30 @@ class CreateFooter extends CreateElement
                 ':p>__GENERATEP__</' . CreateElement::NAMESPACEWORD .
                 ':p>__GENERATEFTR__';
         $this->_xml = str_replace('__GENERATEFTR__', $xml, $this->_xml);
+    }
+
+    /**
+     * Generate w:ptab
+     *
+     * @param string $relativeTo
+     * @param string $alignment
+     * @param string $leader
+     * @access protected
+     */
+    protected function generatePTAB($relativeTo = 'margin',
+                                     $alignment = 'right',
+                                     $leader = 'none')
+    {
+        $xml = '<' . CreateElement::NAMESPACEWORD .
+                ':ptab ' . CreateElement::NAMESPACEWORD .
+                ':relativeTo="' . $relativeTo .
+                '" ' . CreateElement::NAMESPACEWORD .
+                ':alignment="' . $alignment .
+                '" ' . CreateElement::NAMESPACEWORD .
+                ':leader="' . $leader .
+                '"></' . CreateElement::NAMESPACEWORD . ':ptab>';
+
+        $this->_xml = str_replace('__GENERATER__', $xml, $this->_xml);
     }
 
     /**
@@ -172,42 +200,4 @@ class CreateFooter extends CreateElement
         }
     }
 
-    /**
-     * Generate w:ptab
-     *
-     * @param string $relativeTo
-     * @param string $alignment
-     * @param string $leader
-     * @access protected
-     */
-    protected function generatePTAB($relativeTo = 'margin',
-                                     $alignment = 'right',
-                                     $leader = 'none')
-    {
-        $xml = '<' . CreateElement::NAMESPACEWORD .
-                ':ptab ' . CreateElement::NAMESPACEWORD .
-                ':relativeTo="' . $relativeTo .
-                '" ' . CreateElement::NAMESPACEWORD .
-                ':alignment="' . $alignment .
-                '" ' . CreateElement::NAMESPACEWORD .
-                ':leader="' . $leader .
-                '"></' . CreateElement::NAMESPACEWORD . ':ptab>';
-
-        $this->_xml = str_replace('__GENERATER__', $xml, $this->_xml);
-    }
-
-    /**
-     * Generate w:fldsimple
-     *
-     * @access protected
-     */
-    protected function generateFLDSIMPLE()
-    {
-        $xml = '<' . CreateElement::NAMESPACEWORD .
-                ':fldSimple ' . CreateElement::NAMESPACEWORD .
-                ':instr=" PAGE   \* MERGEFORMAT "></'
-                . CreateElement::NAMESPACEWORD . ':fldSimple>';
-
-        $this->_xml = str_replace('__GENERATERSUB__', $xml, $this->_xml);
-    }
 }
