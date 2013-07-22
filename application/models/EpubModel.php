@@ -32,6 +32,14 @@
 			$epub = $this->dfcTools['epubConverter'];
 			if (!$options['customOptions']['html']) { //if no html has been passed, transform the Word Document
 				$html = strip_tags($transform->getDocumentHTML($options['src']), "<head><title><body><p><script><style><span><div><a><em><strong><h1><h2><h3><h4><h5><h6>"); //an example of basic 'content cleansing'
+				$content_start =
+					"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+					. "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
+					. "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
+					. "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+
+					$content_end = "\n</html>\n";
+					$html = $content_start . $html . $content_end;
 			} else {
 				$html = $options['customOptions']['html'];
 			}
