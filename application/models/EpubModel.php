@@ -31,7 +31,7 @@
 		{
 			$epub = $this->dfcTools['epubConverter'];
 			if (!$options['customOptions']['html']) { //if no html has been passed, transform the Word Document
-				$html = strip_tags($transform->getDocumentHTML($options['src']), "<p><script><style><span>"); //an example of basic 'content cleansing'
+				$html = strip_tags($transform->getDocumentHTML($options['src']), "<html><head><title><body><p><script><style><span><div><a><em><strong><h1><h2><h3><h4><h5><h6>"); //an example of basic 'content cleansing'
 			} else {
 				$html = $options['customOptions']['html'];
 			}
