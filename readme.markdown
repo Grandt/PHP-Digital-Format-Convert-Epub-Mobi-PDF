@@ -1,5 +1,5 @@
 # DON'T USE.
-## This was an experiemnt, trying to get the original packate to work.
+## This was an experiemnt, trying to get the original package to work.
 
 ## It failed.
 
