@@ -1,3 +1,9 @@
+# DON'T USE.
+## This was an experiemnt, trying to get the original packate to work.
+
+## It failed.
+
+
 # Digital Format Conversion Tools 
 ## Convert from DOCX or HTML to EPUB, Kindle, and PDF in PHP
 
